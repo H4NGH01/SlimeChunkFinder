@@ -6,10 +6,9 @@ import org.jetbrains.annotations.NotNull;
 public class Util {
 	
 	@Contract(pure = true)
-	public static @NotNull String toHTMLFormat(String s) {
-		s = "<html>" + s.replaceAll("\n", "<br/>") + "</html>";
-		return s;
-	} 
+	public static @NotNull String toHTMLFormat(@NotNull String s) {
+		return "<html>" + s.replaceAll("\n", "<br/>") + "</html>";
+	}
 	
 	@Contract(pure = true)
 	public static @NotNull String toHTMLColor(@NotNull String c) {
