@@ -1,5 +1,5 @@
 # SlimeChunkFinder
-[English](https://github.com/H4NGH01/SlimeChunkFinder/blob/main/README.md) | 中文简体(https://github.com/H4NGH01/SlimeChunkFinder/blob/main/README_zh_s.md) | 中文繁體
+[English](https://github.com/H4NGH01/SlimeChunkFinder/blob/master/README.md) | 中文简体(https://github.com/H4NGH01/SlimeChunkFinder/blob/master/README_ch_s.md) | 中文繁體
 
 **這是一個Minecraft工具**，用於尋找指定範圍裡半徑128格內可以加載最多史萊姆區塊的位置。
 
