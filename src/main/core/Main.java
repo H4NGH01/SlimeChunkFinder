@@ -1,7 +1,7 @@
 package main.core;
 
-import main.core.lang.Languages;
-import main.core.lang.LanguagesManager;
+import main.core.lang.Language;
+import main.core.lang.LanguageManager;
 
 import java.io.*;
 import java.util.Properties;
@@ -9,9 +9,9 @@ import java.util.Properties;
 public class Main {
 
 	private static final String NAME = "Slime Chunk Finder";
-	private static final String VERSION = "Beta 0.6";
+	private static final String VERSION = "Beta 0.6.1";
 	private static final Properties PROPERTIES = new Properties();
-	private static final LanguagesManager LANGUAGES_MANAGER = new LanguagesManager();
+	private static final LanguageManager LANGUAGES_MANAGER = new LanguageManager();
 
 	public static void main(String[] args) {
 		try {
@@ -26,7 +26,7 @@ public class Main {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		for (Languages l : Languages.values()) {
+		for (Language l : Language.values()) {
 			if (l.toString().equals(Main.getProperties().getProperty("language"))) {
 				Main.getLanguagesManager().setLanguages(l);
 				break;
@@ -39,7 +39,7 @@ public class Main {
 		return PROPERTIES;
 	}
 
-	public static LanguagesManager getLanguagesManager() {
+	public static LanguageManager getLanguagesManager() {
 		return LANGUAGES_MANAGER;
 	}
 	

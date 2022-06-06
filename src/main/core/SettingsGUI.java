@@ -1,6 +1,6 @@
 package main.core;
 
-import main.core.lang.Languages;
+import main.core.lang.Language;
 import main.core.utils.Util;
 
 import javax.swing.*;
@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class SettingsGUI extends GUIBase {
 
-    private final SlimeChunkFinderWindow mainWindow;
+    private final SlimeChunkFinderWindow scfWindow;
 
     public final JCheckBox cb1 = fCheckBox(this, 20, 20, 20, 20, null);
     public final JCheckBox cb2 = fCheckBox(this, 20, 60, 20, 20, null);
@@ -17,14 +17,10 @@ public class SettingsGUI extends GUIBase {
     public final JButton bca = fButton(this, 200, 320, 80, 30, "cancel", null);
     public final JButton bap = fButton(this, 290, 320, 80, 30, "apply", null);
 
-    private final String[] langList = {
-            Main.getLanguagesManager().getTranslateFromLanguage("language.name", Languages.en_us),
-            Main.getLanguagesManager().getTranslateFromLanguage("language.name", Languages.zh_ch),
-            Main.getLanguagesManager().getTranslateFromLanguage("language.name", Languages.zh_tw)};
-    public final JComboBox<?> langComboBox = new JComboBox<Object>(langList);
+    public final JComboBox<?> langComboBox;
 
     public SettingsGUI(SlimeChunkFinderWindow window) {
-        this.mainWindow = window;
+        this.scfWindow = window;
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLayout(null);
         this.setSize(400, 400);
@@ -35,50 +31,56 @@ public class SettingsGUI extends GUIBase {
         fLabel(this, 50, 60, 120, 20, "settings.use-chunk-coord");
         fLabel(this, 20, 100, 120, 20, "language");
 
-        langComboBox.setBounds(20, 130, 100, 30);
-        for (int i = 0; i < Languages.values().length; i++) {
-            if (Languages.values()[i].equals(Languages.valueOf(Main.getProperties().getProperty("language")))) {
-                langComboBox.setSelectedIndex(i);
+        String[] langList = new String[Language.values().length];
+        for (int i = 0; i < Language.values().length; i++) {
+            langList[i] = Main.getLanguagesManager().getTranslateFromLanguage("language.name", Language.values()[i]);
+        }
+        this.langComboBox = new JComboBox<Object>(langList);
+
+        this.langComboBox.setBounds(20, 130, 100, 30);
+        for (int i = 0; i < Language.values().length; i++) {
+            if (Language.values()[i].equals(Language.valueOf(Main.getProperties().getProperty("language")))) {
+                this.langComboBox.setSelectedIndex(i);
                 break;
             }
         }
-        this.add(langComboBox);
+        this.add(this.langComboBox);
 
-        cb1.setSelected(Boolean.parseBoolean(Main.getProperties().getProperty("save-record")));
-        cb2.setSelected(Boolean.parseBoolean(Main.getProperties().getProperty("use-chunk-coord")));
+        this.cb1.setSelected(Boolean.parseBoolean(Main.getProperties().getProperty("save-record")));
+        this.cb2.setSelected(Boolean.parseBoolean(Main.getProperties().getProperty("use-chunk-coord")));
 
-        bco.addActionListener(e1 -> {
+        this.bco.addActionListener(e1 -> {
             this.updateSettings();
             this.dispose();
         });
-        bca.addActionListener(e1 -> {
-            for (int i = 0; i < Languages.values().length; i++) {
-                if (Languages.values()[i].equals(Languages.valueOf(Main.getProperties().getProperty("language")))) {
-                    langComboBox.setSelectedIndex(i);
+        this.bca.addActionListener(e1 -> {
+            for (int i = 0; i < Language.values().length; i++) {
+                if (Language.values()[i].equals(Language.valueOf(Main.getProperties().getProperty("language")))) {
+                    this.langComboBox.setSelectedIndex(i);
                     break;
                 }
             }
-            cb1.setSelected(Boolean.parseBoolean(Main.getProperties().getProperty("save-record")));
-            cb2.setSelected(Boolean.parseBoolean(Main.getProperties().getProperty("use-chunk-coord")));
+            this.cb1.setSelected(Boolean.parseBoolean(Main.getProperties().getProperty("save-record")));
+            this.cb2.setSelected(Boolean.parseBoolean(Main.getProperties().getProperty("use-chunk-coord")));
             this.dispose();
         });
-        bap.addActionListener(e1 -> this.updateSettings());
+        this.bap.addActionListener(e1 -> this.updateSettings());
     }
 
     private void updateSettings() {
         Main.getProperties().setProperty("save-record", String.valueOf(cb1.isSelected()));
         Main.getProperties().setProperty("use-chunk-coord", String.valueOf(cb2.isSelected()));
-        this.mainWindow.useChunkCoord = cb2.isSelected();
+        this.scfWindow.useChunkCoord = cb2.isSelected();
 
-        this.mainWindow.lMinX.setToolTipText(this.cb2.isSelected() ? "min_chunk_X" : "min_coord_X");
-        this.mainWindow.lMaxX.setToolTipText(this.cb2.isSelected() ? "max_chunk_X" : "max_coord_X");
-        this.mainWindow.lMinZ.setToolTipText(this.cb2.isSelected() ? "min_chunk_Z" : "min_coord_Z");
-        this.mainWindow.lMaxZ.setToolTipText(this.cb2.isSelected() ? "max_chunk_Z" : "max_coord_Z");
+        this.scfWindow.lMinX.setToolTipText(this.cb2.isSelected() ? "min_chunk_X" : "min_coord_X");
+        this.scfWindow.lMaxX.setToolTipText(this.cb2.isSelected() ? "max_chunk_X" : "max_coord_X");
+        this.scfWindow.lMinZ.setToolTipText(this.cb2.isSelected() ? "min_chunk_Z" : "min_coord_Z");
+        this.scfWindow.lMaxZ.setToolTipText(this.cb2.isSelected() ? "max_chunk_Z" : "max_coord_Z");
 
-        for (int i = 0; i < Languages.values().length; i++) {
-            if (i == langComboBox.getSelectedIndex()) {
-                Main.getProperties().setProperty("language", Languages.values()[i].toString());
-                Main.getLanguagesManager().setLanguages(Languages.values()[i]);
+        for (int i = 0; i < Language.values().length; i++) {
+            if (i == this.langComboBox.getSelectedIndex()) {
+                Main.getProperties().setProperty("language", Language.values()[i].toString());
+                Main.getLanguagesManager().setLanguages(Language.values()[i]);
                 break;
             }
         }
@@ -88,10 +90,10 @@ public class SettingsGUI extends GUIBase {
             if (c instanceof JButton b) b.setText(translation(b.getToolTipText()));
         }
         StringBuilder str = new StringBuilder();
-        for (String s : this.mainWindow.outArray) {
+        for (String s : this.scfWindow.outArray) {
             str.append(translation(s).replaceAll("%n", "\n").replaceAll("%ch", translation("chunk")).replaceAll("%cd", translation("coord")).replaceAll("%sc", translation("slime_chunk_amount")));
         }
-        this.mainWindow.output.setText(Util.toHTMLFormat(str.toString()));
+        this.scfWindow.output.setText(Util.toHTMLFormat(str.toString()));
 
         try {
             Main.getProperties().store(new FileOutputStream("config.properties"), null);
