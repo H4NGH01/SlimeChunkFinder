@@ -1,5 +1,5 @@
 # SlimeChunkFinder
-English | [中文简体](https://github.com/H4NGH01/SlimeChunkFinder/blob/main/README_zh_s.md) | [中文繁體](https://github.com/H4NGH01/SlimeChunkFinder/blob/main/README_zh_t.md)
+English | [中文简体](https://github.com/H4NGH01/SlimeChunkFinder/blob/main/README_ch_s.md) | [中文繁體](https://github.com/H4NGH01/SlimeChunkFinder/blob/main/README_ch_t.md)
 
 **This is a minecraft tool** to help you find where is the most slime chunk that a player can load.
 
