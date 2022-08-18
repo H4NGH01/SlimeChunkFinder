@@ -1,7 +1,7 @@
 {
 	"language.name": "中文简体",
 	"language": "语言",
-	"default_text": "感谢您使用此程式.%n作者: JJGP%nDiscord: JJGP#6724%n",
+	"default_text": "感谢您使用此程式.%n作者: JJGP%n电子邮件: imc84668@gmail.com%nDiscord: JJGP#6724%n",
 	"invalid_argument": "参数无效",
 	"result_head": "在范围中找到最多可生怪的史莱姆区块的位置有:%n",
 	"chunk": "区块",

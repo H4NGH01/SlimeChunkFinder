@@ -9,7 +9,7 @@ import java.util.Properties;
 public class Main {
 
 	private static final String NAME = "Slime Chunk Finder";
-	private static final String VERSION = "Beta 0.6.1";
+	private static final String VERSION = "Beta 0.7.1";
 	private static final Properties PROPERTIES = new Properties();
 	private static final LanguageManager LANGUAGES_MANAGER = new LanguageManager();
 
@@ -35,14 +35,6 @@ public class Main {
 		new SlimeChunkFinderWindow(new SlimeChunkFinder());
 	}
 
-	public static Properties getProperties() {
-		return PROPERTIES;
-	}
-
-	public static LanguageManager getLanguagesManager() {
-		return LANGUAGES_MANAGER;
-	}
-	
 	public static String getName() {
 		return NAME;
 	}
@@ -50,5 +42,13 @@ public class Main {
 	public static String getVersion() {
 		return VERSION;
 	}
-	
+
+	public static Properties getProperties() {
+		return PROPERTIES;
+	}
+
+	public static LanguageManager getLanguagesManager() {
+		return LANGUAGES_MANAGER;
+	}
+
 }

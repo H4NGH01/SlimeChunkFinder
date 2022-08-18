@@ -25,7 +25,6 @@ public class SlimeChunkFinder {
 	
 	public void setSeed(long seedIn) {
 		seed = seedIn;
-		rand.setSeed(seed);
 	}
 	
 	public List<Result> find(int x1, int x2, int z1, int z2) {
@@ -83,10 +82,5 @@ public class SlimeChunkFinder {
 	public static long getSeed() {
 		return seed;
 	}
-	
-	public boolean isSlimeChunk(long seed, int chunkX, int chunkZ) {
-        rand.setSeed(seed + ((long) chunkX * chunkX * 4987142) + (chunkX * 5947611L) + ((long) chunkZ * chunkZ) * 4392871L + (chunkZ * 389711L) ^ 987234911L);
-        return rand.nextInt(10) == 0;
-    }
-	
+
 }

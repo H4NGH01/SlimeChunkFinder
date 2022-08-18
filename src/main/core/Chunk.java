@@ -23,10 +23,11 @@ public class Chunk {
 	public final boolean isSlimeChunk() {
 		return this.slimeChunk;
 	}
-	
+
+	@SuppressWarnings("all")
 	private static boolean isSlimeChunk(int chunkX, int chunkZ) {
-		SlimeChunkFinder.rand.setSeed(SlimeChunkFinder.getSeed() + ((long) chunkX * chunkX * 4987142) + ((long) chunkX * 5947611) + ((long) chunkZ * chunkZ * 4392871L) + ((long) chunkZ * 389711 ^ 987234911L));
-        return SlimeChunkFinder.rand.nextInt(10) == 0;
+		SlimeChunkFinder.rand.setSeed(SlimeChunkFinder.getSeed() + (long) (chunkX * chunkX * 4987142) + (long) (chunkX * 5947611) + (long) (chunkZ * chunkZ) * 4392871L + (long) (chunkZ * 389711) ^ 987234911L);
+		return SlimeChunkFinder.rand.nextInt(10) == 0;
     }
 	
 }

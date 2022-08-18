@@ -1,14 +1,15 @@
 package main.core.lang;
 
 public enum Language {
+
 	en_us("/res/en_us.json"),
 	zh_ch("/res/zh_ch.json"),
 	zh_tw("/res/zh_tw.json");
 	
-	public final String path;
+	private final String path;
 	
-	Language(String s) {
-		this.path = s;
+	Language(String path) {
+		this.path = path;
 	}
 	
 	public String getPath() {
