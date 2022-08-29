@@ -9,9 +9,11 @@ import java.util.Properties;
 public class Main {
 
 	private static final String NAME = "Slime Chunk Finder";
-	private static final String VERSION = "Beta 0.7.1";
+	private static final String VERSION = "Beta 0.8";
 	private static final Properties PROPERTIES = new Properties();
 	private static final LanguageManager LANGUAGES_MANAGER = new LanguageManager();
+	private static final SlimeChunkFinder FINDER = new SlimeChunkFinder();
+	private static SlimeChunkFinderWindow WINDOW;
 
 	public static void main(String[] args) {
 		try {
@@ -32,7 +34,7 @@ public class Main {
 				break;
 			}
 		}
-		new SlimeChunkFinderWindow(new SlimeChunkFinder());
+		WINDOW = new SlimeChunkFinderWindow(FINDER);
 	}
 
 	public static String getName() {
@@ -49,6 +51,14 @@ public class Main {
 
 	public static LanguageManager getLanguagesManager() {
 		return LANGUAGES_MANAGER;
+	}
+
+	public static SlimeChunkFinder getFinder() {
+		return FINDER;
+	}
+
+	public static SlimeChunkFinderWindow getWindow() {
+		return WINDOW;
 	}
 
 }

@@ -77,6 +77,15 @@ public abstract class GUIBase extends JFrame {
         throw new IllegalArgumentException();
     }
 
+    public static @NotNull JProgressBar fProgressBar(@NotNull JFrame frame, int x, int y, int width, int height, int min, int max) {
+        JProgressBar pb = new JProgressBar();
+        pb.setBounds(x, y, width, height);
+        pb.setMinimum(min);
+        pb.setMaximum(max);
+        frame.add(pb);
+        return pb;
+    }
+
     public static String translation(String s) {
         return s != null ? Main.getLanguagesManager().handleGetObject(s).toString() : null;
     }

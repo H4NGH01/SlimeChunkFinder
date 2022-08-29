@@ -1,6 +1,7 @@
 package main.core;
 
 import main.core.utils.Util;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,6 +32,13 @@ public class SlimeChunkFinderWindow extends GUIBase {
 	public final JTextField fMinZ = fTextField(this, 16, 20, 140, 120, 20, "");
 	public final JTextField fMaxZ = fTextField(this, 16, 140, 140, 120, 20, "");
 
+	public final JProgressBar fpb = fProgressBar(this, 20, 220, 240, 10, 0, 100);
+
+	private final JButton startTask;
+	private final JButton cancelTask;
+
+	private SearchTask task;
+
 	public SlimeChunkFinderWindow(SlimeChunkFinder finder) {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLayout(null);
@@ -52,40 +60,36 @@ public class SlimeChunkFinderWindow extends GUIBase {
 		add(this.outputPanel);
 
 		fLabel(this, 20, 20, 60, 20, "seed");
+
 		if (Boolean.parseBoolean(Main.getProperties().getProperty("save-record"))) this.fSeed.setText(Main.getProperties().getProperty("last-seed"));
 
-		fButton(this, 100, 180, 100, 30, "find", e -> {
-			long seed;
-			int minX;
-			int maxX;
-			int minZ;
-			int maxZ;
+		cancelTask = fButton(this, 150, 180, 100, 30, "cancel", e -> {
+			cancelTask();
+		});
+		cancelTask.setEnabled(false);
+
+		startTask = fButton(this, 30, 180, 100, 30, "find", e -> {
 			try {
-				seed = Long.parseLong(this.fSeed.getText());
-				minX = Integer.parseInt(this.fMinX.getText());
-				maxX = Integer.parseInt(this.fMaxX.getText());
-				minZ = Integer.parseInt(this.fMinZ.getText());
-				maxZ = Integer.parseInt(this.fMaxZ.getText());
+				long seed = Long.parseLong(this.fSeed.getText());
+				int minX = Integer.parseInt(this.fMinX.getText());
+				int maxX = Integer.parseInt(this.fMaxX.getText());
+				int minZ = Integer.parseInt(this.fMinZ.getText());
+				int maxZ = Integer.parseInt(this.fMaxZ.getText());
 				finder.setSeed(seed);
-				if (minX <= maxX && minZ <= maxZ) {
+				if (!SearchTask.isTASKING() && minX <= maxX && minZ <= maxZ) {
 					if (!this.useChunkCoord) {
 						minX /= 16;
 						maxX /= 16;
 						minZ /= 16;
 						maxZ /= 16;
 					}
-					List<Result> rs = finder.find(minX, maxX, minZ, maxZ);
-					this.out.delete(0, this.out.length());
-					this.out.append("result_head" + "\n");
-					for (Result r : rs) {
-						this.out.append(r.getDetails()).append("\n").append(finder.getChunkArrayImage(r.getChunkArray()));
-					}
-					this.outArray = this.out.toString().split("\n");
-					StringBuilder sb = new StringBuilder();
-					for (String s : this.outArray) {
-						sb.append(translation(s).replaceAll("%n", "\n").replaceAll("%ch", translation("chunk")).replaceAll("%cd", translation("coord")).replaceAll("%sc", translation("slime_chunk_amount")));
-					}
-					this.output.setText(Util.toHTMLFormat(sb.toString()));
+					this.fpb.setMaximum(Math.abs((maxX - minX) * (maxZ - minZ)));
+					this.fpb.setValue(0);
+
+					this.task = new SearchTask(minX, maxX, minZ, maxZ);
+					this.startTask();
+					cancelTask.setEnabled(true);
+
 					if (seed == 0 && minX == 0 && maxX == 0 && minZ == 0 && maxZ == 0) {
 						this.output.setText(Util.toHTMLFormat(translation("easter_egg")));
 					}
@@ -106,6 +110,33 @@ public class SlimeChunkFinderWindow extends GUIBase {
 		fButton(this, 20, 480, 30, 30, JImageIcon("/res/icon/settings.png"), e -> this.settingsGUI.setVisible(true));
 
 		this.setVisible(true);
+	}
+
+	public void search(@NotNull List<Result> results) {
+		this.out.delete(0, this.out.length());
+		this.out.append("result_head" + "\n");
+		for (Result r : results) {
+			this.out.append(r.getDetails()).append("\n").append(SlimeChunkFinder.genChunkArrayImage(r.getChunkArray()));
+		}
+		this.outArray = this.out.toString().split("\n");
+		StringBuilder sb = new StringBuilder();
+		for (String s : this.outArray) {
+			sb.append(translation(s).replaceAll("%n", "\n").replaceAll("%ch", translation("chunk")).replaceAll("%cd", translation("coord")).replaceAll("%sc", translation("slime_chunk_amount")));
+		}
+		this.output.setText(Util.toHTMLFormat(sb.toString()));
+		this.startTask.setEnabled(true);
+		this.cancelTask.setEnabled(false);
+	}
+
+	private void startTask() {
+		this.startTask.setEnabled(false);
+	}
+
+	private void cancelTask() {
+		if (this.task == null) return;
+		this.task.cancel();
+		this.startTask.setEnabled(true);
+		this.cancelTask.setEnabled(false);
 	}
 
 }
